@@ -78,7 +78,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5xX-yb-PeD"/>
+                                                    <action selector="noButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WnX-rJ-JKh"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mNl-kQ-YRz" userLabel="Yes button">
@@ -118,7 +118,9 @@
                     <connections>
                         <outlet property="counterLabel" destination="POO-Tt-hmO" id="8uZ-k2-Qyi"/>
                         <outlet property="imageView" destination="WfZ-mT-cQ9" id="0xx-Ac-2um"/>
+                        <outlet property="noButton" destination="d3k-6a-DPc" id="1gc-Gg-Snu"/>
                         <outlet property="textLabel" destination="u0x-rR-t6T" id="veD-Kr-DR0"/>
+                        <outlet property="yesButton" destination="mNl-kQ-YRz" id="Rzi-2L-ICa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -128,7 +130,7 @@
     </scenes>
     <resources>
         <namedColor name="YP Black">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="0.60000001430511474" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

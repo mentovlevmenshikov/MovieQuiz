@@ -24,6 +24,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
     // MARK: - Private Properties
     private var currentQuestionIndex = 0
@@ -74,16 +76,19 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         show(quiz: currentQuestionIndex)
     }
     
     // MARK: - IB Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
+        setEnabledForButtons(false)
         let isCorrectResult = isCorrectResult(userAnswer: false)
         showAnswerResult(isCorrect: isCorrectResult)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        setEnabledForButtons(false)
         let isCorrectResult = isCorrectResult(userAnswer: true)
         showAnswerResult(isCorrect: isCorrectResult)
     }
@@ -99,14 +104,10 @@ final class MovieQuizViewController: UIViewController {
         if (isCorrect) {
             correctAnswers += 1
         }
-        
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 5.0
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 10.0
-        
+        setBorderForImageView(isCorrect: isCorrect)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResult()
+            self.setEnabledForButtons(true)
         }
     }
     
@@ -138,9 +139,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(quiz step: QuizStepViewModel) {
-        imageView.layer.borderWidth = 0.0
-        imageView.layer.borderColor = UIColor.clear.cgColor
-        
+        setBorderForImageView(isCorrect: nil)
         imageView.image = step.image
         counterLabel.text = step.questionNumber
         textLabel.text = step.question
@@ -156,5 +155,22 @@ final class MovieQuizViewController: UIViewController {
         
         alert.addAction(action)
         present(alert, animated: true)
+    }
+    
+    private func setBorderForImageView(isCorrect: Bool?)
+    {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8.0
+        imageView.layer.cornerRadius = 20.0
+        if let isCorrect {
+            imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        } else{
+            imageView.layer.borderColor = UIColor.clear.cgColor
+        }
+    }
+    
+    private func setEnabledForButtons(_ enabled: Bool) {
+        noButton.isEnabled = enabled
+        yesButton.isEnabled = enabled
     }
 }
