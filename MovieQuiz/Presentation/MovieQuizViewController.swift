@@ -36,8 +36,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question else { return }
         currentQuestion = question
         DispatchQueue.main.async { [weak self] in
-                self?.show(quiz: question)
-            }
+            self?.show(quiz: question)
+        }
     }
     
     // MARK: - IB Actions
@@ -89,13 +89,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func message() -> String {
-        let line1 = "Ваш результат: \(correctAnswers)/\(questionsAmount)"
-        let line2 = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-        let line3 = "Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total)"
-            + " (\(statisticService.bestGame.date.dateTimeString))"
-        let line4 = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
-        return line1 + "\n" + line2 + "\n" + line3 + "\n" + line4
+    private func message() -> String {"""
+        Ваш результат: \(correctAnswers)/\(questionsAmount)
+        Количество сыгранных квизов: \(statisticService.gamesCount)
+        Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+        Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+        """
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
