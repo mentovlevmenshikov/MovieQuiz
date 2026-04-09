@@ -25,10 +25,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let questionFactory =  QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        self.questionFactory = questionFactory
-        showLoadingIndicator()
-        questionFactory.loadData()
+        setupQuestionFactory()
+        startQuiz()
+    }
+    
+    private func setupQuestionFactory() {
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+    }
+    
+    private func startQuiz() {
+        setLoading(true)
+        questionFactory?.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -43,29 +50,31 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     func didLoadDataFromServer() {
         questionFactory?.requestNextQuestion()
-        hideLoadingIndicator()
+        setLoading(false)
     }
     
     func didFailToLoadData(with error: Error) {
         showNetworkError(message: error.localizedDescription)
-        hideLoadingIndicator()
+        setLoading(false)
     }
     
     // MARK: - IB Actions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        setEnabledForButtons(false)
-        let isCorrectResult = isCorrectResult(userAnswer: false)
-        showAnswerResult(isCorrect: isCorrectResult)
+        handleAnswer(false)
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        handleAnswer(true)
+    }
+    
+    private func handleAnswer(_ userAnser: Bool) {
         setEnabledForButtons(false)
-        let isCorrectResult = isCorrectResult(userAnswer: true)
+        let isCorrectResult = isCorrectResult(userAnswer: userAnser)
         showAnswerResult(isCorrect: isCorrectResult)
     }
     
-    // MARK: - Pivate Methods
+    // MARK: - Private Methods
     
     private func isCorrectResult(userAnswer: Bool) -> Bool {
         guard let currentQuestion else { return false }
@@ -155,18 +164,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         yesButton.isEnabled = enabled
     }
     
-    private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-    }
-    
-    private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
-        activityIndicator.stopAnimating()
+    private func setLoading(_ isLoading: Bool) {
+        activityIndicator.isHidden = !isLoading
+        isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
     }
     
     private func showNetworkError(message: String) {
-        hideLoadingIndicator()
+        setLoading(false)
         
         let model = AlertModel(title: "Ошибка", message: message, buttonText: "OK") { [weak self] in
             guard let self else { return }
