@@ -8,16 +8,17 @@ import Foundation
 
 final class MovieQuizPresenter : QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
+    private var questionFactory: QuestionFactoryProtocol?
+    private let statisticService: StatisticServiceProtocol!
+    private weak var viewController: MovieQuizViewControllerProtocol?
     
-    let questionsAmount: Int = 10
-    var correctAnswers: Int = 0
-    var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
-    var questionFactory: QuestionFactoryProtocol?
+    private let questionsAmount: Int = 10
+    private var correctAnswers: Int = 0
+    private var currentQuestion: QuizQuestion?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
-
+        statisticService = StatisticService()
         setupQuestionFactory()
         startQuiz()
     }
@@ -50,14 +51,27 @@ final class MovieQuizPresenter : QuestionFactoryDelegate {
         viewController?.setLoading(false)
     }
     
-    func showNextQuestionOrResult() {
+    // MARK: - Internal Methods
+    
+    func proceedWithAnswer(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        viewController?.setBorderForImageView(isCorrect: isCorrect)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self else { return }
+            self.proceedToNextQuestionOrResults()
+            viewController?.setEnabledForButtons(true)
+        }
+    }
+    
+    func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
-            let text = viewController?.message() ?? ""
+            let text = self.message()
             let resultViewModel = QuizResultViewModel(
                 title: "Этот раунд закончен",
                 text: text,
                 buttonText: "Сыграть еще раз?"
             )
+            statisticService.store(correct: self.correctAnswers, total: self.questionsAmount)
             viewController?.show(quiz: resultViewModel)
         } else {
             self.switchToNextQuestion()
@@ -89,9 +103,12 @@ final class MovieQuizPresenter : QuestionFactoryDelegate {
             QuizStepViewModel(
                 image: model.image,
                 question: model.text,
-                questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)" // ОШИБКА: `currentQuestionIndex` и `questionsAmount` неопределены
+                questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
             )
     }
+    
+    
+    // MARK: - Private Methods
     
     private func setupQuestionFactory() {
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -104,11 +121,19 @@ final class MovieQuizPresenter : QuestionFactoryDelegate {
     
     private func handleAnswer(_ userAnser: Bool) {
         let isCorrectResult = isCorrectResult(userAnswer: userAnser)
-        viewController?.showAnswerResult(isCorrect: isCorrectResult)
+        proceedWithAnswer(isCorrect: isCorrectResult)
     }
     
     private func isCorrectResult(userAnswer: Bool) -> Bool {
         guard let currentQuestion else { return false }
         return  currentQuestion.correctAnswer == userAnswer
+    }
+    
+    private func message() -> String {"""
+        Ваш результат: \(self.correctAnswers)/\(self.questionsAmount)
+        Количество сыгранных квизов: \(statisticService.gamesCount)
+        Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
+        Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+        """
     }
 }

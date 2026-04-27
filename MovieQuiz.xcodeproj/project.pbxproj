@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710603F92F9EA9C500975418 /* MovieQuizViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710603F82F9EA9BA00975418 /* MovieQuizViewControllerProtocol.swift */; };
 		710FB6FF2F52BFC200C5CB0C /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 710FB6FE2F52BFC200C5CB0C /* YS Display-Medium.ttf */; };
 		710FB7002F52BFC200C5CB0C /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 710FB6FD2F52BFC200C5CB0C /* YS Display-Bold.ttf */; };
 		7162D4192F856F87005CD605 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162D4182F856F80005CD605 /* NetworkClient.swift */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		710603F82F9EA9BA00975418 /* MovieQuizViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewControllerProtocol.swift; sourceTree = "<group>"; };
 		710FB6FD2F52BFC200C5CB0C /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		710FB6FE2F52BFC200C5CB0C /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		7162D4182F856F80005CD605 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 		8F4738322848DE2A005DF65E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				710603F82F9EA9BA00975418 /* MovieQuizViewControllerProtocol.swift */,
 				71D9FA142F96A6B0009BD3DE /* MovieQuizPresenter.swift */,
 				71840F0B2F7236E0001A2F30 /* AlertPresenter.swift */,
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
@@ -386,6 +389,7 @@
 				71840F0A2F7230D9001A2F30 /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				71840F102F7467A0001A2F30 /* GameResult.swift in Sources */,
+				710603F92F9EA9C500975418 /* MovieQuizViewControllerProtocol.swift in Sources */,
 				7162D4192F856F87005CD605 /* NetworkClient.swift in Sources */,
 				7162D41D2F859598005CD605 /* MoviesLoader.swift in Sources */,
 				71840F062F6FBFC1001A2F30 /* QuestionFactoryProtocol.swift in Sources */,
